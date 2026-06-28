@@ -8,6 +8,7 @@ export async function getInsumos(): Promise<Insumo[]> {
   const { data, error } = await supabase
     .from("insumos")
     .select("*")
+    .neq("estado", "Borrador")
     .order("id", { ascending: false });
   if (error) throw error;
   return (data ?? []) as Insumo[];
@@ -17,6 +18,7 @@ export async function getAlbergues(): Promise<Albergue[]> {
   const { data, error } = await supabase
     .from("albergues")
     .select("*")
+    .neq("estado", "Borrador")
     .order("id", { ascending: true });
   if (error) throw error;
   return (data ?? []) as Albergue[];

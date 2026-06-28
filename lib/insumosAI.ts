@@ -6,7 +6,7 @@ import { SYSTEM_PROMPT } from "./insumoPrompt";
 
 const TIPOS = ["SOLICITUD", "INSUMOS", "AVISO", "INSUMO+SOLICITUD"];
 const URGENCIAS = ["alta", "media", "baja"];
-const ESTADOS = ["Pendiente", "Activo", "En proceso", "Listo", "Completado", "Cancelado"];
+const ESTADOS = ["Pendiente", "Activo", "En proceso", "Listo", "Completado", "Cancelado", "Borrador"];
 
 const SCHEMA = {
   type: "object",
