@@ -2,8 +2,9 @@
 
 import { useMemo, useState } from "react";
 import type { Insumo } from "@/lib/types";
-import { esTerminal, tipoInsumoMeta } from "@/lib/types";
+import { esTerminal, tipoInsumoMeta, fechaLegible } from "@/lib/types";
 import { BotonesContacto, Badge } from "@/components/Acciones";
+import InsumoDetalle from "@/components/InsumoDetalle";
 
 type FiltroTipo = "todos" | "SOLICITUD" | "INSUMOS";
 type Vista = "lista" | "vistazo";
@@ -20,6 +21,7 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
   const [soloAlta, setSoloAlta] = useState(false);
   const [verResueltos, setVerResueltos] = useState(false);
   const [vista, setVista] = useState<Vista>("lista");
+  const [sel, setSel] = useState<Insumo | null>(null);
 
   const resueltos = useMemo(
     () => insumos.filter((i) => esTerminal(i.estado)).length,
@@ -97,10 +99,12 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
       </p>
 
       {vista === "lista" ? (
-        <VistaListaCards lista={lista} />
+        <VistaListaCards lista={lista} onSelect={setSel} />
       ) : (
-        <VistaVistazo lista={lista} />
+        <VistaVistazo lista={lista} onSelect={setSel} />
       )}
+
+      <InsumoDetalle insumo={sel} onClose={() => setSel(null)} />
 
       {lista.length === 0 && (
         <p className="mt-10 text-center text-tinta-suave">
@@ -121,23 +125,35 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
 }
 
 /* ---------- Vista LISTA (tarjetas con scroll, como antes) ---------- */
-function VistaListaCards({ lista }: { lista: Insumo[] }) {
+function VistaListaCards({
+  lista,
+  onSelect,
+}: {
+  lista: Insumo[];
+  onSelect: (i: Insumo) => void;
+}) {
   return (
     <ul className="mt-2 space-y-3">
       {lista.map((i) => (
-        <InsumoCard key={i.id} i={i} />
+        <InsumoCard key={i.id} i={i} onSelect={onSelect} />
       ))}
     </ul>
   );
 }
 
-function InsumoCard({ i }: { i: Insumo }) {
+function InsumoCard({ i, onSelect }: { i: Insumo; onSelect: (i: Insumo) => void }) {
   const meta = tipoInsumoMeta(i.tipo);
   const alta = (i.urgencia ?? "").toLowerCase() === "alta";
   const terminal = esTerminal(i.estado);
   const persona = i.responsable || i.solicitante;
+  const fecha = fechaLegible(i.fecha_registro);
   return (
-    <li className={`rounded-2xl bg-tarjeta p-4 shadow-sm ${terminal ? "opacity-60" : ""}`}>
+    <li
+      onClick={() => onSelect(i)}
+      className={`cursor-pointer rounded-2xl bg-tarjeta p-4 shadow-sm active:scale-[0.99] ${
+        terminal ? "opacity-60" : ""
+      }`}
+    >
       <div className="flex flex-wrap items-center gap-2">
         <Badge className={meta.clase}>
           {meta.emoji} {meta.label}
@@ -157,17 +173,29 @@ function InsumoCard({ i }: { i: Insumo }) {
       </h3>
       {i.zona ? <p className="mt-1 text-sm text-tinta-suave">📍 {i.zona}</p> : null}
       {persona ? <p className="mt-0.5 text-sm text-tinta-suave">🧑 {persona}</p> : null}
-      {i.notas ? <p className="mt-2 text-sm text-tinta">{i.notas}</p> : null}
-      <BotonesContacto
-        contacto={i.contacto}
-        mensaje={`¡Hola! Te escribo por "${i.insumo}" (Red Pana Venezuela 🤝)`}
-      />
+      {fecha ? <p className="mt-0.5 text-xs text-tinta-suave">🕐 {fecha}</p> : null}
+      {i.notas ? <p className="mt-2 text-sm text-tinta line-clamp-2">{i.notas}</p> : null}
+      <div onClick={(e) => e.stopPropagation()}>
+        <BotonesContacto
+          contacto={i.contacto}
+          mensaje={`¡Hola! Te escribo por "${i.insumo}" (Red Pana Venezuela 🤝)`}
+        />
+      </div>
+      <p className="mt-2 text-center text-xs font-medium text-pana-azul">
+        Toca para ver todo →
+      </p>
     </li>
   );
 }
 
 /* ---------- Vista VISTAZO (todo agrupado de un golpe) ---------- */
-function VistaVistazo({ lista }: { lista: Insumo[] }) {
+function VistaVistazo({
+  lista,
+  onSelect,
+}: {
+  lista: Insumo[];
+  onSelect: (i: Insumo) => void;
+}) {
   const t = (i: Insumo) => (i.tipo || "").toUpperCase().replace(/\s/g, "");
   const sols = lista.filter((i) => t(i) === "SOLICITUD");
   const inss = lista.filter((i) => t(i) === "INSUMOS");
@@ -187,10 +215,10 @@ function VistaVistazo({ lista }: { lista: Insumo[] }) {
         <Kpi n={urgentes} label="Urgent." color="text-pana-rojo" />
       </div>
 
-      <Seccion titulo="⭕️ Se necesita" color="text-pana-rojo" items={sols} />
-      <Seccion titulo="❇️ Disponible" color="text-pana-verde" items={inss} verde />
-      <Seccion titulo="🟡 Ofrecen · falta logística" color="text-[#ca8a04]" items={mixtos} amarillo />
-      <Seccion titulo="⚠️ Avisos" color="text-[#d97706]" items={avisos} amarillo />
+      <Seccion titulo="⭕️ Se necesita" color="text-pana-rojo" items={sols} onSelect={onSelect} />
+      <Seccion titulo="❇️ Disponible" color="text-pana-verde" items={inss} verde onSelect={onSelect} />
+      <Seccion titulo="🟡 Ofrecen · falta logística" color="text-[#ca8a04]" items={mixtos} amarillo onSelect={onSelect} />
+      <Seccion titulo="⚠️ Avisos" color="text-[#d97706]" items={avisos} amarillo onSelect={onSelect} />
     </div>
   );
 }
@@ -212,12 +240,14 @@ function Seccion({
   items,
   verde,
   amarillo,
+  onSelect,
 }: {
   titulo: string;
   color: string;
   items: Insumo[];
   verde?: boolean;
   amarillo?: boolean;
+  onSelect: (i: Insumo) => void;
 }) {
   if (items.length === 0) return null;
   return (
@@ -227,7 +257,7 @@ function Seccion({
       </h3>
       <div className="mt-2 grid grid-cols-2 gap-2">
         {items.map((i) => (
-          <MiniCard key={i.id} i={i} verde={verde} amarillo={amarillo} />
+          <MiniCard key={i.id} i={i} verde={verde} amarillo={amarillo} onSelect={onSelect} />
         ))}
       </div>
     </div>
@@ -238,10 +268,12 @@ function MiniCard({
   i,
   verde,
   amarillo,
+  onSelect,
 }: {
   i: Insumo;
   verde?: boolean;
   amarillo?: boolean;
+  onSelect: (i: Insumo) => void;
 }) {
   const accent = verde
     ? "#16a34a"
@@ -252,7 +284,8 @@ function MiniCard({
   const persona = i.solicitante || i.responsable;
   return (
     <div
-      className="rounded-lg bg-tarjeta p-2 shadow-sm"
+      onClick={() => onSelect(i)}
+      className="cursor-pointer rounded-lg bg-tarjeta p-2 shadow-sm active:scale-[0.98]"
       style={{ borderLeft: `3px solid ${accent}` }}
     >
       <div className="flex items-start justify-between gap-1">

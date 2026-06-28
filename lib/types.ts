@@ -111,6 +111,27 @@ export function urlMaps(a: Pick<Albergue, "nombre" | "direccion" | "zona" | "plu
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 
+/** Fecha legible en hora de Venezuela (ej. "28/06/2026, 10:37 a. m."). */
+export function fechaLegible(s: string | null | undefined): string | null {
+  if (!s) return null;
+  // acepta "2026-06-27 15:38:15" o ISO; trátalo como UTC si no trae zona
+  const iso = s.includes("T") ? s : s.replace(" ", "T") + (/[zZ]|[+-]\d\d:?\d\d$/.test(s) ? "" : "Z");
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return s;
+  try {
+    return d.toLocaleString("es-VE", {
+      timeZone: "America/Caracas",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return d.toLocaleString();
+  }
+}
+
 /** Cupos libres (o null si no se reportó capacidad). */
 export function cuposLibres(a: Albergue): number | null {
   if (!a.capacidad || a.capacidad <= 0) return null;
