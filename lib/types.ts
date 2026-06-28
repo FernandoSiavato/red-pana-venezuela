@@ -18,6 +18,7 @@ export interface Insumo {
   estado: string | null;
   notas: string | null;
   mensaje_original: string | null;
+  foto_url: string | null;
   fecha_registro: string | null;
   updated_at: string | null;
 }
@@ -39,6 +40,7 @@ export interface Albergue {
   necesidades: string | null;
   estado: string | null;
   notas: string | null;
+  foto_url: string | null;
   updated_at: string | null;
 }
 

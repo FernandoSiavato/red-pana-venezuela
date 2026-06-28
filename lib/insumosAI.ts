@@ -55,7 +55,7 @@ export async function extraerInsumo(texto: string): Promise<InsumoIA> {
   const client = new OpenAI({ apiKey: key });
   const completion = await client.chat.completions.create(
     {
-      model: "gpt-4o-mini",
+      model: "gpt-4.1-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: texto },
@@ -104,6 +104,7 @@ export async function guardarInsumo(
     estado,
     notas: str("notas"),
     mensaje_original: str("mensaje_original"),
+    foto_url: str("foto_url"),
   };
 
   const { data, error } = await supabaseAdmin()

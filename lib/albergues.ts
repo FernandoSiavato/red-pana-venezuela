@@ -35,6 +35,7 @@ export async function guardarAlbergue(
     necesidades: str("necesidades"),
     estado: str("estado"),
     notas: str("notas"),
+    foto_url: str("foto_url"),
   };
 
   const { data, error } = await supabaseAdmin()

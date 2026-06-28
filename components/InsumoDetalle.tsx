@@ -84,6 +84,12 @@ export default function InsumoDetalle({
           </div>
         </div>
 
+        {/* Foto */}
+        {i.foto_url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={i.foto_url} alt={i.insumo} className="max-h-72 w-full object-cover" />
+        )}
+
         {/* Mapa */}
         {mapQ && (
           <iframe
