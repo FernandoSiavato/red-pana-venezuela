@@ -26,8 +26,8 @@ async function subir(buf: Buffer, contentType: string): Promise<string> {
 
 /** Descarga una imagen desde una URL (ej. file_url de Telegram) y la sube. */
 export async function subirFotoDesdeUrl(url: string): Promise<string> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("No se pudo descargar la imagen.");
+  const res = await fetch(url, { headers: { "user-agent": "RedPanaBot/1.0 (+red-pana-venezuela.vercel.app)" } });
+  if (!res.ok) throw new Error(`No se pudo descargar la imagen (HTTP ${res.status}).`);
   const contentType = res.headers.get("content-type") || "image/jpeg";
   if (!contentType.startsWith("image/")) throw new Error("La URL no es una imagen.");
   const buf = Buffer.from(await res.arrayBuffer());
