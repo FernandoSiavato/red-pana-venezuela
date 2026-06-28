@@ -49,3 +49,5 @@ La lectura es libre. Escribir (agregar insumos/albergues/páginas) requiere una 
 admin y no está documentado públicamente. RLS de Supabase permite solo `SELECT` a `anon`.
 
 Hecho con cariño por **Global Shapers Caracas**. 🇻🇪
+
+> Despliegue automático: cada push a `main` se publica solo en Vercel.
