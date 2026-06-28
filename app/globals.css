@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ====== Identidad PANA — Red Pana Venezuela ====== */
+@theme {
+  --color-pana-amarillo: #ffc107; /* primario, calidez/sol */
+  --color-pana-azul: #1d4ed8; /* acciones, enlaces */
+  --color-pana-verde: #16a34a; /* disponible / ok */
+  --color-pana-rojo: #dc2626; /* urgente, usar poco */
+
+  --color-tinta: #111827; /* texto */
+  --color-tinta-suave: #6b7280; /* secundario */
+  --color-fondo: #f3f4f6; /* fondo app */
+  --color-tarjeta: #ffffff; /* tarjetas */
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+/* Mobile-first: una columna, todo grande y legible */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  /* deja sitio a la bottom-nav fija */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* Tap targets cómodos para el pulgar */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Oculta scrollbar de los chips de filtro horizontales */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

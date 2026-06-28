@@ -1,0 +1,31 @@
+{
+  "name": "Red Pana Venezuela",
+  "short_name": "Red Pana",
+  "description": "La red que conecta la ayuda en Venezuela: insumos, albergues y páginas útiles.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffc107",
+  "theme_color": "#ffc107",
+  "lang": "es",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
