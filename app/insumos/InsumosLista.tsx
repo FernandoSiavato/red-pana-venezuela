@@ -164,6 +164,7 @@ function InsumoCard({ i, onSelect }: { i: Insumo; onSelect: (i: Insumo) => void 
         {terminal && (
           <Badge className="bg-gray-100 text-tinta-suave">✓ {i.estado}</Badge>
         )}
+        <span className="ml-auto text-sm font-extrabold text-tinta-suave">#{i.id}</span>
       </div>
       <h3 className="mt-2 text-lg font-bold leading-snug">
         {i.insumo}
@@ -292,6 +293,7 @@ function MiniCard({
         <span className="text-xs font-bold leading-tight text-tinta line-clamp-2">
           {i.insumo}
         </span>
+        <span className="shrink-0 text-[10px] font-extrabold text-tinta-suave">#{i.id}</span>
       </div>
       {sub ? (
         <p className="mt-0.5 text-[10px] leading-tight text-tinta-suave line-clamp-1">

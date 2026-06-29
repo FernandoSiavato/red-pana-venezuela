@@ -39,7 +39,7 @@ export default function InsumoDetalle({
 
   async function compartir() {
     const txt =
-      `${meta.emoji} ${meta.label}: ${i.insumo}${i.cantidad ? ` (${i.cantidad})` : ""}` +
+      `${meta.emoji} ${meta.label} #${i.id}: ${i.insumo}${i.cantidad ? ` (${i.cantidad})` : ""}` +
       `${i.zona ? `\n📍 ${i.zona}` : ""}` +
       `${i.contacto ? `\n📞 ${i.contacto}` : ""}` +
       `${i.notas ? `\n${i.notas}` : ""}` +
@@ -66,7 +66,7 @@ export default function InsumoDetalle({
       >
         {/* Barra superior */}
         <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-gray-200 bg-tarjeta px-4 py-3">
-          <span className="truncate text-sm font-bold">{meta.emoji} {meta.label}</span>
+          <span className="truncate text-sm font-bold">{meta.emoji} {meta.label} <span className="text-tinta-suave">· #{i.id}</span></span>
           <div className="flex items-center gap-2">
             <button
               onClick={compartir}
@@ -126,6 +126,7 @@ export default function InsumoDetalle({
 
           {/* Ficha de datos */}
           <dl className="mt-4 divide-y divide-gray-200 rounded-2xl bg-tarjeta px-4 shadow-sm">
+            <Campo k="N°" v={`#${i.id}`} />
             <Campo k="Categoría" v={i.categoria} />
             <Campo k="Tipo" v={`${meta.emoji} ${meta.label}`} />
             <Campo k="Urgencia" v={urg?.label ?? i.urgencia} />
