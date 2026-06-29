@@ -40,19 +40,22 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
           : i.tipo === "INSUMOS" || i.tipo === "INSUMO+SOLICITUD"
       )
       .filter((i) => (soloAlta ? (i.urgencia ?? "").toLowerCase() === "alta" : true))
-      .filter((i) =>
-        !texto
-          ? true
-          : [i.insumo, i.zona, i.categoria, i.responsable, i.solicitante, i.notas]
-              .filter(Boolean)
-              .join(" ")
-              .toLowerCase()
-              .includes(texto)
-      )
+      .filter((i) => {
+        if (!texto) return true;
+        // Filtrar por número de ID: "94" o "#94"
+        const num = texto.replace(/^#/, "");
+        if (/^\d+$/.test(num) && String(i.id).startsWith(num)) return true;
+        return [i.insumo, i.zona, i.categoria, i.responsable, i.solicitante, i.notas]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(texto);
+      })
       .sort((a, b) => {
         const ua = (a.urgencia ?? "").toLowerCase() === "alta" ? 0 : 1;
         const ub = (b.urgencia ?? "").toLowerCase() === "alta" ? 0 : 1;
-        return ua - ub;
+        if (ua !== ub) return ua - ub;
+        return b.id - a.id; // dentro de cada grupo: lo más reciente primero
       });
   }, [insumos, q, tipo, soloAlta, verResueltos]);
 
@@ -72,7 +75,7 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
       <input
         type="search"
         inputMode="search"
-        placeholder="Buscar insumo, zona…"
+        placeholder="Buscar insumo, zona o #número…"
         value={q}
         onChange={(e) => setQ(e.target.value)}
         className="mt-3 w-full rounded-2xl border border-gray-200 bg-tarjeta px-4 py-3 text-base outline-none focus:border-pana-azul"
