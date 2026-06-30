@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Insumo } from "@/lib/types";
 import { esTerminal, tipoInsumoMeta, fechaLegible } from "@/lib/types";
+import { regionDe, grupoDe, labelRegion, labelGrupo } from "@/lib/reportes";
 import { BotonesContacto, Badge } from "@/components/Acciones";
 import InsumoDetalle from "@/components/InsumoDetalle";
 
@@ -15,13 +16,23 @@ const URG_COLOR: Record<string, string> = {
   baja: "#16a34a",
 };
 
-export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
+export default function InsumosLista({
+  insumos,
+  initialRegion,
+  initialGrupo,
+}: {
+  insumos: Insumo[];
+  initialRegion?: string;
+  initialGrupo?: string;
+}) {
   const [q, setQ] = useState("");
   const [tipo, setTipo] = useState<FiltroTipo>("todos");
   const [soloAlta, setSoloAlta] = useState(false);
   const [verResueltos, setVerResueltos] = useState(false);
   const [vista, setVista] = useState<Vista>("lista");
   const [sel, setSel] = useState<Insumo | null>(null);
+  const [region, setRegion] = useState(initialRegion ?? "");
+  const [grupo, setGrupo] = useState(initialGrupo ?? "");
 
   const resueltos = useMemo(
     () => insumos.filter((i) => esTerminal(i.estado)).length,
@@ -40,6 +51,8 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
           : i.tipo === "INSUMOS" || i.tipo === "INSUMO+SOLICITUD"
       )
       .filter((i) => (soloAlta ? (i.urgencia ?? "").toLowerCase() === "alta" : true))
+      .filter((i) => (region ? regionDe(i.zona) === region : true))
+      .filter((i) => (grupo ? grupoDe(i.categoria) === grupo : true))
       .filter((i) => {
         if (!texto) return true;
         // Filtrar por número de ID: "94" o "#94"
@@ -57,7 +70,7 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
         if (ua !== ub) return ua - ub;
         return b.id - a.id; // dentro de cada grupo: lo más reciente primero
       });
-  }, [insumos, q, tipo, soloAlta, verResueltos]);
+  }, [insumos, q, tipo, soloAlta, verResueltos, region, grupo]);
 
   return (
     <div className="mx-auto max-w-md px-4 pt-4">
@@ -96,6 +109,27 @@ export default function InsumosLista({ insumos }: { insumos: Insumo[] }) {
           🔴 Urgente
         </Chip>
       </div>
+
+      {(region || grupo) && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {region && (
+            <button
+              onClick={() => setRegion("")}
+              className="inline-flex items-center gap-1 rounded-full bg-pana-azul/10 px-3 py-1.5 text-sm font-semibold text-pana-azul"
+            >
+              📍 {labelRegion(region)} <span className="text-base leading-none">✕</span>
+            </button>
+          )}
+          {grupo && (
+            <button
+              onClick={() => setGrupo("")}
+              className="inline-flex items-center gap-1 rounded-full bg-pana-azul/10 px-3 py-1.5 text-sm font-semibold text-pana-azul"
+            >
+              🏷️ {labelGrupo(grupo)} <span className="text-base leading-none">✕</span>
+            </button>
+          )}
+        </div>
+      )}
 
       <p className="mt-3 text-sm text-tinta-suave">
         {lista.length} {lista.length === 1 ? "resultado" : "resultados"}
