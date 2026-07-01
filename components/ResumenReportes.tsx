@@ -1,15 +1,31 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import type { ResumenReportes as Resumen } from "@/lib/reportes";
+import type { ResumenVistas } from "@/lib/reportes";
 
-/** Tablero pulido de reportes de necesidad. Cada zona/categoría lleva a la lista filtrada. */
-export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
-  const { total, hoy, zonas, categorias, porDia } = resumen;
-  if (total === 0) return null;
+type VistaKey = "hoy" | "ayer" | "general";
 
-  const maxDia = Math.max(1, ...porDia.map((d) => d.count));
+/** Tablero de reportes de necesidad con toggle Hoy / Ayer / General (filtra todo el tablero). */
+export default function ResumenReportes({ vistas }: { vistas: ResumenVistas }) {
+  const [v, setV] = useState<VistaKey>("general");
 
-  const maxZona = Math.max(1, ...zonas.map((z) => z.count));
-  const topZona = zonas.reduce((a, b) => (b.count > a.count ? b : a), zonas[0]);
+  if (vistas.general.total === 0) return null;
+
+  const data = vistas[v];
+  const diaParam = v === "hoy" ? vistas.hoyStr : v === "ayer" ? vistas.ayerStr : null;
+  const suffix = diaParam ? `&dia=${diaParam}` : "";
+  const sub =
+    v === "hoy" ? "solicitudes de hoy" : v === "ayer" ? "solicitudes de ayer" : "solicitudes activas";
+
+  const maxZona = Math.max(1, ...data.zonas.map((z) => z.count));
+  const topZona = data.zonas.reduce((a, b) => (b.count > a.count ? b : a), data.zonas[0]);
+
+  const botones: { key: VistaKey; label: string; count: number }[] = [
+    { key: "hoy", label: "Hoy", count: vistas.hoy.total },
+    { key: "ayer", label: "Ayer", count: vistas.ayer.total },
+    { key: "general", label: "General", count: vistas.general.total },
+  ];
 
   return (
     <section className="mt-2 rounded-3xl bg-tarjeta p-5 shadow-sm">
@@ -24,127 +40,111 @@ export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
           </h2>
         </div>
         <div className="shrink-0 text-right">
-          <div className="text-4xl font-extrabold leading-none text-tinta">{total}</div>
+          <div className="text-4xl font-extrabold leading-none text-tinta">{data.total}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-tinta-suave">
-            Activos
+            {v === "general" ? "Activos" : v}
           </div>
         </div>
       </div>
-      <p className="mt-2 text-sm leading-relaxed text-tinta-suave">
-        Solicitudes activas recibidas por la red, en vivo desde la base de datos.
-      </p>
-      {hoy > 0 && (
-        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-pana-verde/10 px-3 py-1.5 text-sm font-bold text-pana-verde">
-          <span className="h-2 w-2 rounded-full bg-pana-verde" />
-          {hoy} {hoy === 1 ? "solicitud" : "solicitudes"} hoy
-        </div>
-      )}
 
-      {/* Por zona */}
-      <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
-        Reportes por zona{" "}
-        <span className="font-medium normal-case tracking-normal">— densidad</span>
-      </h3>
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        {zonas.map((z) => {
-          const destacada = z.key === topZona.key && z.count > 0;
-          const llenas = z.count > 0 ? Math.max(1, Math.round((z.count / maxZona) * 12)) : 0;
-          return (
-            <Link
-              key={z.key}
-              href={`/insumos?region=${z.key}`}
-              className={`rounded-2xl border p-3 active:scale-[0.99] ${
-                destacada
-                  ? "border-pana-azul/30 bg-pana-azul/5"
-                  : "border-gray-200 bg-tarjeta"
-              }`}
-            >
-              <p className="text-[13px] font-bold leading-tight text-tinta">{z.label}</p>
-              <div className="mt-1 flex items-end justify-between gap-2">
-                <p className="text-2xl font-extrabold leading-none text-tinta">
-                  {z.count}
-                  <span className="ml-1 text-[11px] font-semibold text-tinta-suave">
-                    reportes
-                  </span>
-                </p>
-                <Densidad llenas={llenas} />
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Por día */}
-      {porDia.length > 0 && (
-        <>
-          <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
-            Solicitudes por día
-          </h3>
-          <div className="mt-2 space-y-2">
-            {porDia.map((d) => (
-              <Link
-                key={d.dia}
-                href={`/insumos?dia=${d.dia}`}
-                className="flex items-center gap-3 active:opacity-80"
-              >
-                <span
-                  className={`w-12 shrink-0 text-sm font-bold ${
-                    d.esHoy ? "text-pana-verde" : "text-tinta-suave"
-                  }`}
-                >
-                  {d.label}
-                </span>
-                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-gray-100">
-                  <div
-                    className={`h-full rounded-full ${
-                      d.esHoy ? "bg-pana-verde" : "bg-pana-azul/70"
-                    }`}
-                    style={{ width: `${Math.max(6, Math.round((d.count / maxDia) * 100))}%` }}
-                  />
-                </div>
-                <span className="w-6 shrink-0 text-right text-sm font-extrabold text-tinta">
-                  {d.count}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
-
-      {/* Por categoría */}
-      <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
-        Categorías más solicitadas
-      </h3>
-      <div className="mt-2 space-y-3">
-        {categorias.slice(0, 4).map((c, idx) => (
-          <Link
-            key={c.key}
-            href={`/insumos?grupo=${c.key}`}
-            className="block active:opacity-80"
+      {/* Toggle Hoy / Ayer / General */}
+      <div className="mt-4 flex rounded-2xl bg-gray-100 p-1">
+        {botones.map((b) => (
+          <button
+            key={b.key}
+            onClick={() => setV(b.key)}
+            className={`flex-1 rounded-xl py-2 text-sm font-bold transition-colors ${
+              v === b.key ? "bg-tarjeta text-pana-azul shadow-sm" : "text-tinta-suave"
+            }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="w-6 shrink-0 text-sm font-extrabold text-pana-azul/60">
-                {String(idx + 1).padStart(2, "0")}
-              </span>
-              <span className="flex-1 text-sm font-bold text-tinta">{c.label}</span>
-              <span className="shrink-0 text-sm font-bold text-tinta">
-                {c.count}
-                <span className="font-medium text-tinta-suave"> / {total}</span>
-              </span>
-            </div>
-            <div className="ml-9 mt-1 h-2 overflow-hidden rounded-full bg-gray-100">
-              <div
-                className="h-full rounded-full bg-pana-azul"
-                style={{ width: `${Math.max(4, Math.round((c.count / total) * 100))}%` }}
-              />
-            </div>
-          </Link>
+            {b.label}
+            <span className={`ml-1 text-xs font-semibold ${v === b.key ? "text-pana-azul/70" : "text-tinta-suave"}`}>
+              {b.count}
+            </span>
+          </button>
         ))}
       </div>
 
-      <p className="mt-4 text-center text-xs font-medium text-pana-azul">
-        Toca una zona o categoría para ver los reportes →
-      </p>
+      {data.total === 0 ? (
+        <p className="mt-5 rounded-2xl bg-gray-50 py-6 text-center text-sm text-tinta-suave">
+          No hay {sub} todavía. 🙌
+        </p>
+      ) : (
+        <>
+          <p className="mt-3 text-sm leading-relaxed text-tinta-suave">
+            {data.total} {sub}, en vivo desde la base de datos.
+          </p>
+
+          {/* Por zona */}
+          <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
+            Reportes por zona{" "}
+            <span className="font-medium normal-case tracking-normal">— densidad</span>
+          </h3>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {data.zonas
+              .filter((z) => z.count > 0)
+              .map((z) => {
+                const destacada = z.key === topZona.key && z.count > 0;
+                const llenas = z.count > 0 ? Math.max(1, Math.round((z.count / maxZona) * 12)) : 0;
+                return (
+                  <Link
+                    key={z.key}
+                    href={`/insumos?region=${z.key}${suffix}`}
+                    className={`rounded-2xl border p-3 active:scale-[0.99] ${
+                      destacada ? "border-pana-azul/30 bg-pana-azul/5" : "border-gray-200 bg-tarjeta"
+                    }`}
+                  >
+                    <p className="text-[13px] font-bold leading-tight text-tinta">{z.label}</p>
+                    <div className="mt-1 flex items-end justify-between gap-2">
+                      <p className="text-2xl font-extrabold leading-none text-tinta">
+                        {z.count}
+                        <span className="ml-1 text-[11px] font-semibold text-tinta-suave">
+                          reportes
+                        </span>
+                      </p>
+                      <Densidad llenas={llenas} />
+                    </div>
+                  </Link>
+                );
+              })}
+          </div>
+
+          {/* Por categoría */}
+          <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
+            Categorías más solicitadas
+          </h3>
+          <div className="mt-2 space-y-3">
+            {data.categorias.slice(0, 4).map((c, idx) => (
+              <Link
+                key={c.key}
+                href={`/insumos?grupo=${c.key}${suffix}`}
+                className="block active:opacity-80"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="w-6 shrink-0 text-sm font-extrabold text-pana-azul/60">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1 text-sm font-bold text-tinta">{c.label}</span>
+                  <span className="shrink-0 text-sm font-bold text-tinta">
+                    {c.count}
+                    <span className="font-medium text-tinta-suave"> / {data.total}</span>
+                  </span>
+                </div>
+                <div className="ml-9 mt-1 h-2 overflow-hidden rounded-full bg-gray-100">
+                  <div
+                    className="h-full rounded-full bg-pana-azul"
+                    style={{ width: `${Math.max(4, Math.round((c.count / data.total) * 100))}%` }}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <p className="mt-4 text-center text-xs font-medium text-pana-azul">
+            Toca una zona o categoría para ver los reportes →
+          </p>
+        </>
+      )}
     </section>
   );
 }
@@ -155,9 +155,7 @@ function Densidad({ llenas }: { llenas: number }) {
       {Array.from({ length: 12 }).map((_, i) => (
         <span
           key={i}
-          className={`h-[7px] w-[7px] rounded-[2px] ${
-            i < llenas ? "bg-pana-azul" : "bg-gray-200"
-          }`}
+          className={`h-[7px] w-[7px] rounded-[2px] ${i < llenas ? "bg-pana-azul" : "bg-gray-200"}`}
         />
       ))}
     </div>

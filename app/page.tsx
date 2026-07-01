@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getInsumos, getAlbergues, getPaginas } from "@/lib/data";
 import { esTerminal } from "@/lib/types";
-import { resumenReportes } from "@/lib/reportes";
+import { resumenVistas } from "@/lib/reportes";
 import ResumenReportes from "@/components/ResumenReportes";
 import BuscadorGlobal, { type ItemIndice } from "./BuscadorGlobal";
 
@@ -15,7 +15,7 @@ export default async function Inicio() {
   ]);
 
   const insumosActivos = insumos.filter((i) => !esTerminal(i.estado)).length;
-  const resumen = resumenReportes(insumos);
+  const vistas = resumenVistas(insumos);
   const alberguesOperativos = albergues.filter(
     (a) => (a.estado ?? "").toLowerCase() === "operativo"
   ).length;
@@ -130,7 +130,7 @@ export default async function Inicio() {
             ))}
 
             {/* Tablero de reportes (en vivo, clickeable) */}
-            <ResumenReportes resumen={resumen} />
+            <ResumenReportes vistas={vistas} />
           </div>
         </BuscadorGlobal>
       </div>

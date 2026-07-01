@@ -154,3 +154,50 @@ export function resumenReportes(insumos: Insumo[]): ResumenReportes {
 
   return { total, hoy, zonas, categorias, porDia };
 }
+
+// ---- Vistas del reporte: Hoy / Ayer / General ----
+
+export interface Vista {
+  total: number;
+  zonas: { key: RegionKey; label: string; count: number }[];
+  categorias: { key: GrupoKey; label: string; count: number }[];
+}
+
+export interface ResumenVistas {
+  general: Vista;
+  hoy: Vista;
+  ayer: Vista;
+  hoyStr: string;
+  ayerStr: string;
+}
+
+function vistaDe(activos: Insumo[]): Vista {
+  const total = activos.length;
+  const zonas = REGIONS.map((r) => ({
+    ...r,
+    count: activos.filter((i) => regionDe(i.zona) === r.key).length,
+  }));
+  const conteo: Record<string, number> = {};
+  for (const i of activos) {
+    const g = grupoDe(i.categoria);
+    conteo[g] = (conteo[g] ?? 0) + 1;
+  }
+  const categorias = GRUPOS.map((g) => ({ key: g.key, label: g.label, count: conteo[g.key] ?? 0 }))
+    .filter((g) => g.count > 0)
+    .sort((a, b) => b.count - a.count);
+  return { total, zonas, categorias };
+}
+
+/** Tres vistas del reporte (todas sobre solicitudes activas), para el toggle Hoy/Ayer/General. */
+export function resumenVistas(insumos: Insumo[]): ResumenVistas {
+  const activos = reportesActivos(insumos);
+  const hoyStr = FMT_DIA.format(new Date());
+  const ayerStr = FMT_DIA.format(new Date(Date.now() - 86_400_000));
+  return {
+    general: vistaDe(activos),
+    hoy: vistaDe(activos.filter((i) => diaCaracas(i.fecha_registro) === hoyStr)),
+    ayer: vistaDe(activos.filter((i) => diaCaracas(i.fecha_registro) === ayerStr)),
+    hoyStr,
+    ayerStr,
+  };
+}
