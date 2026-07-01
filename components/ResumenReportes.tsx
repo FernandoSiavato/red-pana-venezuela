@@ -3,8 +3,10 @@ import type { ResumenReportes as Resumen } from "@/lib/reportes";
 
 /** Tablero pulido de reportes de necesidad. Cada zona/categoría lleva a la lista filtrada. */
 export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
-  const { total, zonas, categorias } = resumen;
+  const { total, hoy, zonas, categorias, porDia } = resumen;
   if (total === 0) return null;
+
+  const maxDia = Math.max(1, ...porDia.map((d) => d.count));
 
   const maxZona = Math.max(1, ...zonas.map((z) => z.count));
   const topZona = zonas.reduce((a, b) => (b.count > a.count ? b : a), zonas[0]);
@@ -31,6 +33,12 @@ export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
       <p className="mt-2 text-sm leading-relaxed text-tinta-suave">
         Solicitudes activas recibidas por la red, en vivo desde la base de datos.
       </p>
+      {hoy > 0 && (
+        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-pana-verde/10 px-3 py-1.5 text-sm font-bold text-pana-verde">
+          <span className="h-2 w-2 rounded-full bg-pana-verde" />
+          {hoy} {hoy === 1 ? "solicitud" : "solicitudes"} hoy
+        </div>
+      )}
 
       {/* Por zona */}
       <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
@@ -65,6 +73,39 @@ export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
           );
         })}
       </div>
+
+      {/* Por día */}
+      {porDia.length > 0 && (
+        <>
+          <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">
+            Solicitudes por día
+          </h3>
+          <div className="mt-2 space-y-2">
+            {porDia.map((d) => (
+              <div key={d.dia} className="flex items-center gap-3">
+                <span
+                  className={`w-12 shrink-0 text-sm font-bold ${
+                    d.esHoy ? "text-pana-verde" : "text-tinta-suave"
+                  }`}
+                >
+                  {d.label}
+                </span>
+                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+                  <div
+                    className={`h-full rounded-full ${
+                      d.esHoy ? "bg-pana-verde" : "bg-pana-azul/70"
+                    }`}
+                    style={{ width: `${Math.max(6, Math.round((d.count / maxDia) * 100))}%` }}
+                  />
+                </div>
+                <span className="w-6 shrink-0 text-right text-sm font-extrabold text-tinta">
+                  {d.count}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Por categoría */}
       <h3 className="mt-5 text-[11px] font-bold uppercase tracking-wider text-tinta-suave">

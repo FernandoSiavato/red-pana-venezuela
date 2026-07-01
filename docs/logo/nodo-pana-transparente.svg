@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100" role="img" aria-label="Red Pana Venezuela - isotipo Nodo Pana (fondo transparente)">
+  <g stroke="#1E40AF" stroke-width="3.4" stroke-linecap="round">
+    <line x1="32" y1="38" x2="50" y2="54"/>
+    <line x1="68" y1="38" x2="50" y2="54"/>
+    <line x1="32" y1="38" x2="68" y2="38"/>
+    <line x1="50" y1="54" x2="50" y2="72"/>
+  </g>
+  <g fill="#1E40AF">
+    <circle cx="32" cy="38" r="7"/>
+    <circle cx="68" cy="38" r="7"/>
+    <circle cx="50" cy="72" r="7"/>
+  </g>
+  <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+</svg>

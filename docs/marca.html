@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Red Pana Venezuela — Guía de Marca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* Paleta refinada */
+    --amarillo:#F6B600;      /* primario, calidez/sol — bajado de #FFC107 para dar peso */
+    --amarillo-claro:#FFE9A8;
+    --azul:#1E40AF;          /* acciones/enlaces — más profundo que #1D4ED8 para contraste AA */
+    --azul-claro:#DBEAFE;
+    --verde:#15803D;         /* disponible/ok — AA sobre blanco */
+    --verde-claro:#DCFCE7;
+    --rojo:#DC2626;          /* urgente */
+    --rojo-claro:#FEE2E2;
+
+    --tinta:#0F172A;         /* texto principal */
+    --tinta-suave:#64748B;   /* secundario */
+    --linea:#E2E8F0;
+    --fondo:#F4F5F7;
+    --tarjeta:#FFFFFF;
+    --oscuro:#0B1220;
+
+    --display:'Plus Jakarta Sans', system-ui, sans-serif;
+    --texto:'Inter', system-ui, sans-serif;
+
+    --r-sm:10px; --r:16px; --r-lg:24px;
+    --sombra:0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --sombra-lg:0 12px 40px rgba(15,23,42,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    font-family:var(--texto);background:var(--fondo);color:var(--tinta);
+    line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:var(--display);line-height:1.15;letter-spacing:-.02em}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  section{padding:64px 0;border-top:1px solid var(--linea)}
+  .eyebrow{
+    font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--azul);display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:22px;height:3px;border-radius:3px;background:var(--amarillo)}
+  .sec-title{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:10px}
+  .sec-sub{color:var(--tinta-suave);max-width:62ch;font-size:17px}
+
+  /* ===== HERO ===== */
+  .hero{
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(246,182,0,.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(30,64,175,.12), transparent 55%),
+      var(--tarjeta);
+    border-top:none;padding:0;
+  }
+  .hero-inner{padding:72px 0 64px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;background:var(--amarillo-claro);
+    color:#7a5b00;font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px;
+    font-family:var(--display);letter-spacing:.02em;
+  }
+  .hero h1{font-size:clamp(40px,8vw,76px);font-weight:800;margin:22px 0 16px;letter-spacing:-.03em}
+  .hero h1 .pana{color:var(--azul)}
+  .hero .pos{font-size:clamp(18px,2.6vw,24px);color:var(--tinta);max-width:30ch;font-weight:500}
+  .hero .lede{margin-top:18px;color:var(--tinta-suave);max-width:56ch;font-size:17px}
+  .hero-logo{display:flex;align-items:center;gap:18px;margin-top:34px;flex-wrap:wrap}
+  .hero-row{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+  @media(max-width:780px){.hero-row{grid-template-columns:1fr}}
+
+  /* ===== Grids ===== */
+  .grid{display:grid;gap:22px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:880px){.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+
+  .card{background:var(--tarjeta);border:1px solid var(--linea);border-radius:var(--r-lg);box-shadow:var(--sombra);overflow:hidden}
+  .card-pad{padding:24px}
+  .logo-stage{
+    display:flex;align-items:center;justify-content:center;padding:38px 20px;min-height:170px;
+    background:
+      linear-gradient(0deg, rgba(244,245,247,.6), rgba(244,245,247,.6)),
+      repeating-linear-gradient(45deg,#fff,#fff 12px,#fafbfc 12px,#fafbfc 24px);
+  }
+  .logo-stage.dark{background:var(--oscuro)}
+  .concept-tag{display:inline-flex;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-suave)}
+  .concept-name{font-family:var(--display);font-weight:800;font-size:20px;margin:6px 0 6px}
+  .concept-rac{color:var(--tinta-suave);font-size:14.5px}
+  .pill-rec{display:inline-flex;align-items:center;gap:6px;background:var(--verde-claro);color:var(--verde);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;font-family:var(--display)}
+  .star{color:var(--amarillo)}
+
+  .recommended{outline:3px solid var(--amarillo);outline-offset:0}
+
+  /* ===== Lockups ===== */
+  .lock-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:780px){.lock-grid{grid-template-columns:1fr}}
+  .lock-stage{display:flex;align-items:center;justify-content:center;padding:42px 24px;min-height:150px;border-radius:var(--r);}
+  .lock-light{background:var(--tarjeta);border:1px solid var(--linea)}
+  .lock-dark{background:var(--oscuro)}
+  .lock-label{font-size:12.5px;color:var(--tinta-suave);font-family:var(--display);font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+
+  .wordmark{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1}
+  .wm-row{display:flex;align-items:center;gap:14px}
+  .wm-stack{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .wm-text .l1{font-size:26px;color:var(--tinta)}
+  .wm-text .l1 .p{color:var(--azul)}
+  .wm-text .l2{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--tinta-suave);font-weight:700;font-family:var(--display);margin-top:3px}
+  .on-dark .l1{color:#fff}
+  .on-dark .l1 .p{color:var(--amarillo)}
+  .on-dark .l2{color:#94a3b8}
+
+  /* ===== Color ===== */
+  .swatch{border-radius:var(--r);overflow:hidden;border:1px solid var(--linea);background:var(--tarjeta);box-shadow:var(--sombra)}
+  .swatch .chip{height:96px}
+  .swatch .meta{padding:14px 16px}
+  .swatch .nm{font-family:var(--display);font-weight:700;font-size:15px}
+  .swatch .hex{font-size:13px;color:var(--tinta-suave);font-variant-numeric:tabular-nums;letter-spacing:.02em;margin-top:2px}
+  .swatch .use{font-size:13px;color:var(--tinta-suave);margin-top:8px;line-height:1.45}
+  .neutrals{display:flex;gap:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--linea);margin-top:22px}
+  .neutrals div{flex:1;padding:18px 14px;font-size:12px;font-family:var(--display);font-weight:600}
+
+  .state-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .state{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;font-weight:700;font-size:13.5px;font-family:var(--display)}
+  .state .dot{width:9px;height:9px;border-radius:50%}
+
+  /* ===== Tipografía ===== */
+  .type-card{background:var(--tarjeta);border:1px solid var(--linea);border-radius:var(--r-lg);box-shadow:var(--sombra);padding:30px}
+  .t-display{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,56px);letter-spacing:-.03em;line-height:1.05}
+  .t-h2{font-family:var(--display);font-weight:700;font-size:28px;margin-top:22px;letter-spacing:-.02em}
+  .t-sub{font-family:var(--display);font-weight:600;font-size:19px;margin-top:18px;color:var(--azul)}
+  .t-body{font-family:var(--texto);font-size:16px;margin-top:14px;color:var(--tinta);max-width:60ch}
+  .t-small{font-size:13.5px;color:var(--tinta-suave);margin-top:10px}
+  .type-specs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  @media(max-width:680px){.type-specs{grid-template-columns:1fr}}
+  .spec{border:1px dashed var(--linea);border-radius:var(--r);padding:16px}
+  .spec b{font-family:var(--display)}
+
+  /* ===== App icon + mock ===== */
+  .icon-row{display:grid;grid-template-columns:repeat(3,auto);gap:32px;align-items:end;justify-content:start}
+  @media(max-width:680px){.icon-row{grid-template-columns:repeat(2,auto);gap:24px}}
+  .tile{border-radius:24px;box-shadow:var(--sombra-lg);display:flex;align-items:center;justify-content:center}
+  .tile.lg{width:128px;height:128px;border-radius:30px}
+  .tile.md{width:84px;height:84px;border-radius:20px}
+  .tile.sm{width:48px;height:48px;border-radius:12px}
+  .tile-cap{font-size:12px;color:var(--tinta-suave);text-align:center;margin-top:10px;font-family:var(--display);font-weight:600}
+  .icon-grad{background:linear-gradient(150deg,#1E40AF 0%,#2563EB 55%,#1E3A8A 100%)}
+
+  /* phone mock */
+  .phone{width:300px;max-width:100%;margin:0 auto;background:var(--oscuro);border-radius:38px;padding:12px;box-shadow:var(--sombra-lg)}
+  .phone-screen{background:var(--fondo);border-radius:28px;overflow:hidden}
+  .app-head{background:linear-gradient(135deg,#1E40AF,#2563EB);color:#fff;padding:18px 16px 20px}
+  .app-head .top{display:flex;align-items:center;gap:10px}
+  .app-head .ttl{font-family:var(--display);font-weight:800;font-size:18px}
+  .app-head .ttl .p{color:var(--amarillo)}
+  .app-head .sub{font-size:12.5px;color:#cdddff;margin-top:8px}
+  .app-body{padding:14px}
+  .app-card{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:14px;box-shadow:var(--sombra);margin-bottom:12px}
+  .ac-top{display:flex;justify-content:space-between;align-items:start;gap:10px}
+  .ac-title{font-family:var(--display);font-weight:700;font-size:15px}
+  .ac-meta{font-size:12px;color:var(--tinta-suave);margin-top:3px}
+  .tag-ok{background:var(--verde-claro);color:var(--verde);font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;font-family:var(--display);white-space:nowrap}
+  .tag-urg{background:var(--rojo-claro);color:var(--rojo);font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;font-family:var(--display);white-space:nowrap}
+  .ac-btn{margin-top:12px;display:block;width:100%;text-align:center;background:var(--amarillo);color:#3d2f00;font-family:var(--display);font-weight:800;font-size:14px;padding:10px;border-radius:12px;border:none;cursor:pointer}
+  .ac-link{margin-top:10px;color:var(--azul);font-weight:700;font-size:13px;font-family:var(--display)}
+  .navbar{display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--linea);padding:10px 0 12px}
+  .nav-i{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--tinta-suave);font-weight:600}
+  .nav-i.on{color:var(--azul)}
+
+  /* ===== Voz/tono ===== */
+  .voice{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:780px){.voice{grid-template-columns:1fr}}
+  .vc{background:var(--tarjeta);border:1px solid var(--linea);border-radius:var(--r);padding:20px;display:flex;gap:14px;align-items:start}
+  .vc .ic{flex:none;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--amarillo-claro)}
+  .vc h4{font-size:16px;margin-bottom:3px}
+  .vc p{font-size:14px;color:var(--tinta-suave)}
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  @media(max-width:680px){.dodont{grid-template-columns:1fr}}
+  .dd{border-radius:var(--r);padding:18px 20px;border:1px solid var(--linea)}
+  .dd.do{background:var(--verde-claro);border-color:#bbf7d0}
+  .dd.dont{background:var(--rojo-claro);border-color:#fecaca}
+  .dd h4{font-size:14px;margin-bottom:10px;font-family:var(--display)}
+  .dd.do h4{color:var(--verde)} .dd.dont h4{color:var(--rojo)}
+  .dd p{font-size:14px;margin:6px 0;color:var(--tinta)}
+
+  footer{padding:40px 0 60px;color:var(--tinta-suave);font-size:13.5px;text-align:center}
+  .toggle{
+    position:fixed;right:18px;bottom:18px;z-index:50;background:var(--oscuro);color:#fff;border:none;
+    font-family:var(--display);font-weight:700;font-size:13px;padding:11px 16px;border-radius:999px;cursor:pointer;box-shadow:var(--sombra-lg)
+  }
+  /* dark mode (opcional, solo afecta el documento) */
+  body.dark{--fondo:#0B1220;--tarjeta:#111a2e;--tinta:#E6EDF7;--tinta-suave:#8ea0bd;--linea:#1e2a44}
+  body.dark .hero{background:radial-gradient(1200px 500px at 80% -10%, rgba(246,182,0,.14), transparent 60%),var(--tarjeta)}
+  body.dark .hero h1 .pana{color:var(--amarillo)}
+  body.dark .logo-stage:not(.dark){background:#0e1729}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-row">
+      <div>
+        <span class="badge">🤝 Global Shapers Caracas · Respuesta humanitaria</span>
+        <h1>Red <span class="pana">Pana</span> Venezuela</h1>
+        <p class="pos">La red que conecta a quien ayuda con quien lo necesita.</p>
+        <p class="lede">Marca cálida, clara y solidaria para canalizar ayuda tras el terremoto: insumos, albergues, páginas útiles y reportes. Hecha entre panas, para todos.</p>
+        <div class="hero-logo">
+          <!-- Logo principal grande -->
+          <svg width="86" height="86" viewBox="0 0 100 100" role="img" aria-label="Red Pana Venezuela">
+            <defs>
+              <linearGradient id="heroG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="48" fill="url(#heroG)"/>
+            <!-- red de nodos formando un apretón / corazón abstracto -->
+            <g stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round">
+              <line x1="32" y1="38" x2="50" y2="54"/>
+              <line x1="68" y1="38" x2="50" y2="54"/>
+              <line x1="32" y1="38" x2="68" y2="38"/>
+              <line x1="50" y1="54" x2="50" y2="72"/>
+            </g>
+            <g fill="#FFFFFF">
+              <circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/>
+              <circle cx="50" cy="72" r="7"/>
+            </g>
+            <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+          </svg>
+          <div class="wm-text">
+            <div class="l1" style="font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em">Red <span class="p" style="color:var(--azul)">Pana</span></div>
+            <div class="l2">Venezuela</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-radius:var(--r-lg)">
+        <div class="card-pad">
+          <div class="concept-tag">Contenido de la guía</div>
+          <ol style="margin:12px 0 0 18px;font-size:14.5px;color:var(--tinta-suave);line-height:1.9">
+            <li>3 conceptos de logo (SVG)</li>
+            <li>Lockups y versión ícono</li>
+            <li>Concepto recomendado</li>
+            <li>Paleta refinada + estados</li>
+            <li>Tipografía y jerarquía</li>
+            <li>App icon / PWA</li>
+            <li>Mock de la app</li>
+            <li>Voz y tono</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== LOGOS ===================== -->
+<section id="logos">
+  <div class="wrap">
+    <span class="eyebrow">01 · Conceptos de logo</span>
+    <h2 class="sec-title">Tres caminos para el símbolo</h2>
+    <p class="sec-sub">Cada concepto está construido en SVG vectorial, funciona a color y en monocromo, y nace de la misma idea: <b>conectar manos para formar una red</b>.</p>
+
+    <div class="grid g3" style="margin-top:34px">
+
+      <!-- Concepto 1: Nodo Pana (RECOMENDADO) -->
+      <div class="card recommended">
+        <div class="logo-stage">
+          <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Concepto Nodo Pana a color">
+            <defs><linearGradient id="c1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+            <circle cx="50" cy="50" r="48" fill="url(#c1)"/>
+            <g stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+              <line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/>
+              <line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/>
+            </g>
+            <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/></g>
+            <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+          </svg>
+        </div>
+        <div class="logo-stage dark" style="min-height:120px">
+          <svg width="78" height="78" viewBox="0 0 100 100" role="img" aria-label="Concepto Nodo Pana monocromo">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="2.5"/>
+            <g stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+              <line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/>
+              <line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/>
+            </g>
+            <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/><circle cx="50" cy="54" r="8.5"/></g>
+          </svg>
+        </div>
+        <div class="card-pad">
+          <span class="pill-rec"><span class="star">★</span> Recomendado</span>
+          <div class="concept-name">Nodo Pana</div>
+          <p class="concept-rac">Tres nodos que se enlazan y se sostienen en un punto amarillo central: la "Red" hecha de personas que se dan la mano. Limpio, escalable y memorable a 16 px.</p>
+        </div>
+      </div>
+
+      <!-- Concepto 2: Manos-Corazón -->
+      <div class="card">
+        <div class="logo-stage">
+          <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Concepto Manos Corazon a color">
+            <circle cx="50" cy="50" r="48" fill="#FFE9A8"/>
+            <!-- dos manos abstractas formando corazón -->
+            <path d="M50 74 C30 60 22 48 22 38 C22 29 29 24 36 24 C42 24 47 28 50 33 C53 28 58 24 64 24 C71 24 78 29 78 38 C78 48 70 60 50 74 Z"
+                  fill="none" stroke="#1E40AF" stroke-width="5" stroke-linejoin="round"/>
+            <!-- línea de "apretón" que cruza -->
+            <path d="M34 44 L50 52 L66 44" fill="none" stroke="#F6B600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="logo-stage dark" style="min-height:120px">
+          <svg width="78" height="78" viewBox="0 0 100 100" role="img" aria-label="Concepto Manos Corazon monocromo">
+            <path d="M50 74 C30 60 22 48 22 38 C22 29 29 24 36 24 C42 24 47 28 50 33 C53 28 58 24 64 24 C71 24 78 29 78 38 C78 48 70 60 50 74 Z"
+                  fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M34 44 L50 52 L66 44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-pad">
+          <span class="concept-tag">Cálido · solidario</span>
+          <div class="concept-name">Manos-Corazón</div>
+          <p class="concept-rac">Un corazón dibujado como dos manos que se encuentran, cruzado por la "V" amarilla de Venezuela. Máxima carga emocional; ideal para campañas y donaciones.</p>
+        </div>
+      </div>
+
+      <!-- Concepto 3: RP Amistosa -->
+      <div class="card">
+        <div class="logo-stage">
+          <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Concepto RP amistosa a color">
+            <rect x="6" y="6" width="88" height="88" rx="26" fill="#1E40AF"/>
+            <!-- R y P enlazadas: el bucle comparte un nodo -->
+            <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+                  font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="46" fill="#fff">RP</text>
+            <!-- punto de conexión / sonrisa -->
+            <circle cx="50" cy="76" r="5.5" fill="#F6B600"/>
+            <path d="M38 74 Q50 84 62 74" fill="none" stroke="#F6B600" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-stage dark" style="min-height:120px">
+          <svg width="78" height="78" viewBox="0 0 100 100" role="img" aria-label="Concepto RP amistosa monocromo">
+            <rect x="6" y="6" width="88" height="88" rx="26" fill="none" stroke="#fff" stroke-width="2.5"/>
+            <text x="50" y="48" text-anchor="middle" dominant-baseline="central"
+                  font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="46" fill="#fff">RP</text>
+            <path d="M38 74 Q50 84 62 74" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-pad">
+          <span class="concept-tag">Compacto · app-first</span>
+          <div class="concept-name">RP Amistosa</div>
+          <p class="concept-rac">Monograma "RP" con una sonrisa amarilla debajo: cercano y muy legible como ícono de app. La opción más sencilla de mantener en cualquier tamaño.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RECOMENDACIÓN ===================== -->
+<section id="rec">
+  <div class="wrap">
+    <span class="eyebrow">02 · La elección</span>
+    <h2 class="sec-title">Recomendamos <span style="color:var(--azul)">Nodo Pana</span></h2>
+    <div class="card" style="margin-top:22px">
+      <div class="card-pad" style="display:flex;gap:28px;align-items:center;flex-wrap:wrap">
+        <svg width="96" height="96" viewBox="0 0 100 100" style="flex:none" aria-hidden="true">
+          <defs><linearGradient id="r1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#r1)"/>
+          <g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+          <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/></g>
+          <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+        </svg>
+        <p style="flex:1;min-width:280px;font-size:17px;color:var(--tinta)">
+          Es el único concepto que dice <b>las dos palabras clave a la vez</b>: "Red" (nodos conectados) y "Pana" (manos que se dan y se sostienen).
+          Su geometría simple lo hace nítido como favicon de 16 px y como valla; el punto amarillo central aporta calidez sin caer en lo infantil
+          y mantiene continuidad con la identidad PANA actual. Funciona perfecto en monocromo para sellos, oficios y prensa.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LOCKUPS ===================== -->
+<section id="lockups">
+  <div class="wrap">
+    <span class="eyebrow">03 · Lockups</span>
+    <h2 class="sec-title">Combinaciones de logo + nombre</h2>
+    <p class="sec-sub">Versión horizontal, apilada y solo-ícono, sobre fondo claro y oscuro. Respeta un margen de seguridad igual a la altura del nodo central.</p>
+
+    <div class="lock-grid" style="margin-top:30px">
+      <!-- Horizontal claro -->
+      <div>
+        <div class="lock-label">Horizontal · fondo claro</div>
+        <div class="lock-stage lock-light">
+          <div class="wm-row">
+            <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+              <defs><linearGradient id="lh1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+              <circle cx="50" cy="50" r="48" fill="url(#lh1)"/>
+              <g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+              <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/></g>
+              <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+            </svg>
+            <div class="wm-text"><div class="l1">Red <span class="p">Pana</span></div><div class="l2">Venezuela</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Horizontal oscuro -->
+      <div>
+        <div class="lock-label">Horizontal · fondo oscuro</div>
+        <div class="lock-stage lock-dark">
+          <div class="wm-row on-dark">
+            <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="48" fill="#0e1729" stroke="#27406b" stroke-width="2"/>
+              <g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+              <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/></g>
+              <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+            </svg>
+            <div class="wm-text"><div class="l1">Red <span class="p">Pana</span></div><div class="l2">Venezuela</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apilado claro -->
+      <div>
+        <div class="lock-label">Apilado · fondo claro</div>
+        <div class="lock-stage lock-light">
+          <div class="wm-stack">
+            <svg width="58" height="58" viewBox="0 0 100 100" aria-hidden="true">
+              <defs><linearGradient id="ls1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+              <circle cx="50" cy="50" r="48" fill="url(#ls1)"/>
+              <g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+              <g fill="#fff"><circle cx="32" cy="38" r="7"/><circle cx="68" cy="38" r="7"/><circle cx="50" cy="72" r="7"/></g>
+              <circle cx="50" cy="54" r="8.5" fill="#F6B600"/>
+            </svg>
+            <div class="wm-text"><div class="l1">Red <span class="p">Pana</span></div><div class="l2">Venezuela</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Solo ícono claro/oscuro -->
+      <div>
+        <div class="lock-label">Solo ícono · app / favicon</div>
+        <div class="lock-stage lock-dark" style="gap:26px">
+          <svg width="62" height="62" viewBox="0 0 100 100" aria-hidden="true">
+            <defs><linearGradient id="li1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="url(#li1)"/>
+            <g stroke="#fff" stroke-width="3.8" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+            <g fill="#fff"><circle cx="32" cy="38" r="7.5"/><circle cx="68" cy="38" r="7.5"/><circle cx="50" cy="72" r="7.5"/></g>
+            <circle cx="50" cy="54" r="9" fill="#F6B600"/>
+          </svg>
+          <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true">
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="#fff"/>
+            <g stroke="#1E40AF" stroke-width="3.8" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+            <g fill="#1E40AF"><circle cx="32" cy="38" r="7.5"/><circle cx="68" cy="38" r="7.5"/><circle cx="50" cy="72" r="7.5"/></g>
+            <circle cx="50" cy="54" r="9" fill="#F6B600"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COLOR ===================== -->
+<section id="color">
+  <div class="wrap">
+    <span class="eyebrow">04 · Color</span>
+    <h2 class="sec-title">Paleta refinada</h2>
+    <p class="sec-sub">Parte de la paleta PANA actual, con tonos ajustados para cumplir contraste <b>AA</b> sobre blanco. El amarillo se reserva para calidez y acentos; el azul es la voz de las acciones.</p>
+
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:30px" >
+      <div class="swatch"><div class="chip" style="background:#F6B600"></div><div class="meta"><div class="nm">Amarillo Pana</div><div class="hex">#F6B600</div><div class="use">Primario / calidez, sol, botón principal. Usar con texto oscuro.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#1E40AF"></div><div class="meta"><div class="nm">Azul Acción</div><div class="hex">#1E40AF</div><div class="use">Enlaces, navegación, headers, CTA secundarios.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#15803D"></div><div class="meta"><div class="nm">Verde Disponible</div><div class="hex">#15803D</div><div class="use">Estado "disponible / ok", confirmaciones, teléfonos.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#DC2626"></div><div class="meta"><div class="nm">Rojo Urgente</div><div class="hex">#DC2626</div><div class="use">Urgencias y alertas. Usar poco, solo cuando importa.</div></div></div>
+    </div>
+
+    <style>@media(max-width:880px){#color .grid[style*="repeat(4"]{grid-template-columns:1fr 1fr !important}}</style>
+
+    <div class="neutrals">
+      <div style="background:#0F172A;color:#fff">Tinta · #0F172A</div>
+      <div style="background:#64748B;color:#fff">Tinta suave · #64748B</div>
+      <div style="background:#E2E8F0;color:#0F172A">Línea · #E2E8F0</div>
+      <div style="background:#F4F5F7;color:#0F172A">Fondo · #F4F5F7</div>
+      <div style="background:#FFFFFF;color:#0F172A;border-left:1px solid #E2E8F0">Tarjeta · #FFFFFF</div>
+    </div>
+
+    <h3 style="font-size:18px;margin:34px 0 4px">Estados</h3>
+    <div class="state-row">
+      <span class="state" style="background:var(--verde-claro);color:var(--verde)"><span class="dot" style="background:var(--verde)"></span>Disponible</span>
+      <span class="state" style="background:var(--azul-claro);color:var(--azul)"><span class="dot" style="background:var(--azul)"></span>En camino</span>
+      <span class="state" style="background:var(--amarillo-claro);color:#7a5b00"><span class="dot" style="background:var(--amarillo)"></span>Pendiente</span>
+      <span class="state" style="background:var(--rojo-claro);color:var(--rojo)"><span class="dot" style="background:var(--rojo)"></span>Urgente</span>
+      <span class="state" style="background:#F1F5F9;color:#64748B"><span class="dot" style="background:#94a3b8"></span>Cerrado</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TIPOGRAFÍA ===================== -->
+<section id="type">
+  <div class="wrap">
+    <span class="eyebrow">05 · Tipografía</span>
+    <h2 class="sec-title">Jerarquía tipográfica</h2>
+    <p class="sec-sub"><b>Plus Jakarta Sans</b> para display y titulares (cálida, redondeada, con carácter); <b>Inter</b> para cuerpo y datos (neutra y altamente legible en móvil). Ambas en Google Fonts y gratuitas.</p>
+
+    <div class="type-card" style="margin-top:28px">
+      <div class="t-display">Entre panas nos ayudamos.</div>
+      <div class="t-h2">H2 · Plus Jakarta Sans 700</div>
+      <div class="t-sub">Subtítulo · Plus Jakarta Sans 600</div>
+      <p class="t-body">Cuerpo · Inter 400. Texto pensado para leerse de un vistazo en un teléfono de 360 px, con buen interlineado y frases cortas. Aquí va la descripción de un insumo, un albergue o una página útil.</p>
+      <p class="t-small">Texto pequeño / metadatos · Inter 400 · #64748B — fechas, teléfonos, etiquetas secundarias.</p>
+
+      <div class="type-specs">
+        <div class="spec"><b>Display / H1</b><br>Plus Jakarta Sans · 800 · -3% tracking · 1.05 line-height</div>
+        <div class="spec"><b>Títulos H2–H3</b><br>Plus Jakarta Sans · 700 · -2% tracking</div>
+        <div class="spec"><b>Botones y etiquetas</b><br>Plus Jakarta Sans · 700–800</div>
+        <div class="spec"><b>Cuerpo y datos</b><br>Inter · 400–600 · 16 px base · 1.6 line-height</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== APP ICON + MOCK ===================== -->
+<section id="app">
+  <div class="wrap">
+    <span class="eyebrow">06 · Producto</span>
+    <h2 class="sec-title">App icon y marca aterrizada</h2>
+    <p class="sec-sub">El ícono usa el símbolo Nodo Pana sobre un degradado azul, con esquinas redondeadas estilo iOS/Android. A la derecha, la marca aplicada a una tarjeta real de la app.</p>
+
+    <div class="grid g2" style="margin-top:30px;align-items:start">
+      <!-- App icon tiles -->
+      <div class="card"><div class="card-pad">
+        <div class="lock-label">PWA · app icon en varios tamaños</div>
+        <div class="icon-row" style="margin-top:16px">
+          <div>
+            <div class="tile lg icon-grad">
+              <svg width="76" height="76" viewBox="0 0 100 100" aria-hidden="true">
+                <g stroke="#fff" stroke-width="3.8" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+                <g fill="#fff"><circle cx="32" cy="38" r="7.5"/><circle cx="68" cy="38" r="7.5"/><circle cx="50" cy="72" r="7.5"/></g>
+                <circle cx="50" cy="54" r="9" fill="#F6B600"/>
+              </svg>
+            </div>
+            <div class="tile-cap">128 px</div>
+          </div>
+          <div>
+            <div class="tile md icon-grad">
+              <svg width="50" height="50" viewBox="0 0 100 100" aria-hidden="true">
+                <g stroke="#fff" stroke-width="4.2" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+                <g fill="#fff"><circle cx="32" cy="38" r="7.5"/><circle cx="68" cy="38" r="7.5"/><circle cx="50" cy="72" r="7.5"/></g>
+                <circle cx="50" cy="54" r="9.5" fill="#F6B600"/>
+              </svg>
+            </div>
+            <div class="tile-cap">84 px</div>
+          </div>
+          <div>
+            <div class="tile sm icon-grad">
+              <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+                <g stroke="#fff" stroke-width="5.5" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+                <g fill="#fff"><circle cx="32" cy="38" r="8.5"/><circle cx="68" cy="38" r="8.5"/><circle cx="50" cy="72" r="8.5"/></g>
+                <circle cx="50" cy="54" r="11" fill="#F6B600"/>
+              </svg>
+            </div>
+            <div class="tile-cap">48 px / favicon</div>
+          </div>
+        </div>
+      </div></div>
+
+      <!-- Phone mock -->
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="app-head">
+            <div class="top">
+              <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+                <rect x="4" y="4" width="92" height="92" rx="24" fill="rgba(255,255,255,.14)"/>
+                <g stroke="#fff" stroke-width="4.6" stroke-linecap="round"><line x1="32" y1="38" x2="50" y2="54"/><line x1="68" y1="38" x2="50" y2="54"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="50" y1="54" x2="50" y2="72"/></g>
+                <g fill="#fff"><circle cx="32" cy="38" r="7.5"/><circle cx="68" cy="38" r="7.5"/><circle cx="50" cy="72" r="7.5"/></g>
+                <circle cx="50" cy="54" r="9" fill="#F6B600"/>
+              </svg>
+              <span class="ttl">Red <span class="p">Pana</span></span>
+            </div>
+            <div class="sub">Hola, pana 👋 ¿En qué ayudamos hoy?</div>
+          </div>
+          <div class="app-body">
+            <div class="app-card">
+              <div class="ac-top">
+                <div><div class="ac-title">Agua potable · 200 botellas</div><div class="ac-meta">Albergue Los Teques · hoy 9:40 am</div></div>
+                <span class="tag-ok">Disponible</span>
+              </div>
+              <button class="ac-btn">Quiero llevarlo allá</button>
+            </div>
+            <div class="app-card">
+              <div class="ac-top">
+                <div><div class="ac-title">Pañales y medicinas</div><div class="ac-meta">El Valle · necesidad urgente</div></div>
+                <span class="tag-urg">Urgente</span>
+              </div>
+              <div class="ac-link">Ver cómo aportar →</div>
+            </div>
+          </div>
+          <div class="navbar">
+            <div class="nav-i on"><span>🏠</span>Inicio</div>
+            <div class="nav-i"><span>📦</span>Insumos</div>
+            <div class="nav-i"><span>🏠</span>Albergues</div>
+            <div class="nav-i"><span>🗺️</span>Mapa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VOZ Y TONO ===================== -->
+<section id="voz">
+  <div class="wrap">
+    <span class="eyebrow">07 · Voz y tono</span>
+    <h2 class="sec-title">Cómo hablamos</h2>
+    <p class="sec-sub">Como un pana que sabe lo que hace: cercano pero confiable, claro pero humano, siempre con esperanza.</p>
+
+    <div class="voice" style="margin-top:28px">
+      <div class="vc"><div class="ic">🤝</div><div><h4>Cálidos y cercanos</h4><p>Tuteamos y decimos "pana". Hablamos de tú a tú, nunca desde arriba.</p></div></div>
+      <div class="vc"><div class="ic">💡</div><div><h4>Claros y simples</h4><p>Frases cortas, cero tecnicismos. Si lo entiende cualquiera, está bien escrito.</p></div></div>
+      <div class="vc"><div class="ic">🎯</div><div><h4>Útiles y directos</h4><p>Cada mensaje dice qué hacer y a dónde ir. Acción antes que adorno.</p></div></div>
+      <div class="vc"><div class="ic">🌅</div><div><h4>Esperanzadores</h4><p>Reconocemos lo difícil sin dramatizar. Mostramos que salir adelante es posible, juntos.</p></div></div>
+      <div class="vc"><div class="ic">🇻🇪</div><div><h4>Venezolanos</h4><p>Sonamos de aquí, con calle y cariño, sin caer en el cliché ni la politiquería.</p></div></div>
+      <div class="vc"><div class="ic">🛡️</div><div><h4>Confiables</h4><p>Datos verificados, fechas y teléfonos. La calidez no riñe con la seriedad.</p></div></div>
+    </div>
+
+    <div class="dodont">
+      <div class="dd do">
+        <h4>✓ Sí decimos</h4>
+        <p>"Hola, pana 👋 ¿A dónde llevamos el agua?"</p>
+        <p>"Listo: 200 botellas disponibles en Los Teques."</p>
+        <p>"Gracias por sumarte. Cada aporte cuenta."</p>
+      </div>
+      <div class="dd dont">
+        <h4>✕ Evitamos</h4>
+        <p>"Estimado usuario, complete el formulario de solicitud."</p>
+        <p>"Recurso logístico no disponible en su jurisdicción."</p>
+        <p>Tono dramático, alarmista o políticamente cargado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Red Pana Venezuela · Guía de marca v1 · Global Shapers Caracas · 2026<br>
+    Documento interno de diseño. Logos en SVG vectorial · Tipografías: Plus Jakarta Sans + Inter.
+  </div>
+</footer>
+
+<button class="toggle" id="tg" aria-label="Cambiar tema">🌙 Modo oscuro</button>
+<script>
+  const b=document.body, t=document.getElementById('tg');
+  t.addEventListener('click',()=>{
+    b.classList.toggle('dark');
+    t.textContent=b.classList.contains('dark')?'☀️ Modo claro':'🌙 Modo oscuro';
+  });
+</script>
+</body>
+</html>

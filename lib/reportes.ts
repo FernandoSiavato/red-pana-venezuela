@@ -56,6 +56,57 @@ export function labelGrupo(key: string): string {
   return GRUPOS.find((g) => g.key === key)?.label ?? key;
 }
 
+// ---- Reportes por día (hora de Venezuela) ----
+
+const FMT_DIA = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Caracas",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** Devuelve el día (YYYY-MM-DD, hora Caracas) de una fecha, o null. */
+function diaCaracas(s: string | null | undefined): string | null {
+  if (!s) return null;
+  const iso = s.includes("T")
+    ? s
+    : s.replace(" ", "T") + (/[zZ]|[+-]\d\d:?\d\d$/.test(s) ? "" : "Z");
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+  return FMT_DIA.format(d);
+}
+
+export interface DiaReporte {
+  dia: string;
+  label: string;
+  count: number;
+  esHoy: boolean;
+}
+
+/** Cuenta solicitudes por día (todas las que llegaron, ordenadas de más reciente a más viejo). */
+export function reportesPorDia(insumos: Insumo[], dias = 7): DiaReporte[] {
+  const sol = insumos.filter(
+    (i) => i.tipo === "SOLICITUD" || i.tipo === "INSUMO+SOLICITUD"
+  );
+  const conteo: Record<string, number> = {};
+  for (const i of sol) {
+    const d = diaCaracas(i.fecha_registro);
+    if (!d) continue;
+    conteo[d] = (conteo[d] ?? 0) + 1;
+  }
+  const hoy = FMT_DIA.format(new Date());
+  const ayer = FMT_DIA.format(new Date(Date.now() - 86_400_000));
+  return Object.keys(conteo)
+    .sort()
+    .reverse()
+    .slice(0, dias)
+    .map((d) => {
+      const [, m, dd] = d.split("-");
+      const label = d === hoy ? "Hoy" : d === ayer ? "Ayer" : `${dd}/${m}`;
+      return { dia: d, label, count: conteo[d], esHoy: d === hoy };
+    });
+}
+
 /** Solo solicitudes activas (lo que se necesita, sin resolver). */
 export function reportesActivos(insumos: Insumo[]): Insumo[] {
   return insumos.filter(
@@ -65,13 +116,17 @@ export function reportesActivos(insumos: Insumo[]): Insumo[] {
 
 export interface ResumenReportes {
   total: number;
+  hoy: number;
   zonas: { key: RegionKey; label: string; count: number }[];
   categorias: { key: GrupoKey; label: string; count: number }[];
+  porDia: DiaReporte[];
 }
 
 export function resumenReportes(insumos: Insumo[]): ResumenReportes {
   const activos = reportesActivos(insumos);
   const total = activos.length;
+  const porDia = reportesPorDia(insumos, 7);
+  const hoy = porDia.find((d) => d.esHoy)?.count ?? 0;
 
   const zonas = REGIONS.map((r) => ({
     ...r,
@@ -87,5 +142,5 @@ export function resumenReportes(insumos: Insumo[]): ResumenReportes {
     .filter((g) => g.count > 0)
     .sort((a, b) => b.count - a.count);
 
-  return { total, zonas, categorias };
+  return { total, hoy, zonas, categorias, porDia };
 }
