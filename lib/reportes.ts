@@ -66,7 +66,7 @@ const FMT_DIA = new Intl.DateTimeFormat("en-CA", {
 });
 
 /** Devuelve el día (YYYY-MM-DD, hora Caracas) de una fecha, o null. */
-function diaCaracas(s: string | null | undefined): string | null {
+export function diaCaracas(s: string | null | undefined): string | null {
   if (!s) return null;
   const iso = s.includes("T")
     ? s
@@ -74,6 +74,16 @@ function diaCaracas(s: string | null | undefined): string | null {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return null;
   return FMT_DIA.format(d);
+}
+
+/** Etiqueta amigable para un día YYYY-MM-DD (Hoy / Ayer / dd/mm). */
+export function labelDia(dia: string): string {
+  const hoy = FMT_DIA.format(new Date());
+  const ayer = FMT_DIA.format(new Date(Date.now() - 86_400_000));
+  if (dia === hoy) return "Hoy";
+  if (dia === ayer) return "Ayer";
+  const [, m, dd] = dia.split("-");
+  return `${dd}/${m}`;
 }
 
 export interface DiaReporte {

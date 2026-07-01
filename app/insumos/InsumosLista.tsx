@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Insumo } from "@/lib/types";
 import { esTerminal, tipoInsumoMeta, fechaLegible } from "@/lib/types";
-import { regionDe, grupoDe, labelRegion, labelGrupo } from "@/lib/reportes";
+import { regionDe, grupoDe, labelRegion, labelGrupo, diaCaracas, labelDia } from "@/lib/reportes";
 import { BotonesContacto, Badge } from "@/components/Acciones";
 import InsumoDetalle from "@/components/InsumoDetalle";
 
@@ -20,10 +20,12 @@ export default function InsumosLista({
   insumos,
   initialRegion,
   initialGrupo,
+  initialDia,
 }: {
   insumos: Insumo[];
   initialRegion?: string;
   initialGrupo?: string;
+  initialDia?: string;
 }) {
   const [q, setQ] = useState("");
   const [tipo, setTipo] = useState<FiltroTipo>("todos");
@@ -33,6 +35,7 @@ export default function InsumosLista({
   const [sel, setSel] = useState<Insumo | null>(null);
   const [region, setRegion] = useState(initialRegion ?? "");
   const [grupo, setGrupo] = useState(initialGrupo ?? "");
+  const [dia, setDia] = useState(initialDia ?? "");
 
   const resueltos = useMemo(
     () => insumos.filter((i) => esTerminal(i.estado)).length,
@@ -53,6 +56,7 @@ export default function InsumosLista({
       .filter((i) => (soloAlta ? (i.urgencia ?? "").toLowerCase() === "alta" : true))
       .filter((i) => (region ? regionDe(i.zona) === region : true))
       .filter((i) => (grupo ? grupoDe(i.categoria) === grupo : true))
+      .filter((i) => (dia ? diaCaracas(i.fecha_registro) === dia : true))
       .filter((i) => {
         if (!texto) return true;
         // Filtrar por número de ID: "94" o "#94"
@@ -70,7 +74,7 @@ export default function InsumosLista({
         if (ua !== ub) return ua - ub;
         return b.id - a.id; // dentro de cada grupo: lo más reciente primero
       });
-  }, [insumos, q, tipo, soloAlta, verResueltos, region, grupo]);
+  }, [insumos, q, tipo, soloAlta, verResueltos, region, grupo, dia]);
 
   return (
     <div className="mx-auto max-w-md px-4 pt-4">
@@ -110,8 +114,16 @@ export default function InsumosLista({
         </Chip>
       </div>
 
-      {(region || grupo) && (
+      {(region || grupo || dia) && (
         <div className="mt-3 flex flex-wrap gap-2">
+          {dia && (
+            <button
+              onClick={() => setDia("")}
+              className="inline-flex items-center gap-1 rounded-full bg-pana-verde/10 px-3 py-1.5 text-sm font-semibold text-pana-verde"
+            >
+              📅 {labelDia(dia)} <span className="text-base leading-none">✕</span>
+            </button>
+          )}
           {region && (
             <button
               onClick={() => setRegion("")}

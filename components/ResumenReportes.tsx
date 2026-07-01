@@ -82,7 +82,11 @@ export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
           </h3>
           <div className="mt-2 space-y-2">
             {porDia.map((d) => (
-              <div key={d.dia} className="flex items-center gap-3">
+              <Link
+                key={d.dia}
+                href={`/insumos?dia=${d.dia}`}
+                className="flex items-center gap-3 active:opacity-80"
+              >
                 <span
                   className={`w-12 shrink-0 text-sm font-bold ${
                     d.esHoy ? "text-pana-verde" : "text-tinta-suave"
@@ -101,7 +105,7 @@ export default function ResumenReportes({ resumen }: { resumen: Resumen }) {
                 <span className="w-6 shrink-0 text-right text-sm font-extrabold text-tinta">
                   {d.count}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </>
