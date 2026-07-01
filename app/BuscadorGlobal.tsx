@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { coincide } from "@/lib/buscar";
 
 export type ItemIndice = {
   tipo: "insumo" | "albergue" | "pagina";
@@ -26,9 +27,7 @@ export default function BuscadorGlobal({
   const resultados = useMemo(() => {
     if (!texto) return [];
     return indice
-      .filter((it) =>
-        `${it.titulo} ${it.sub}`.toLowerCase().includes(texto)
-      )
+      .filter((it) => coincide([it.titulo, it.sub], texto))
       .slice(0, 30);
   }, [indice, texto]);
 

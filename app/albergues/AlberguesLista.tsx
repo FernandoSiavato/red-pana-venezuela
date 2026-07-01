@@ -3,14 +3,21 @@
 import { useMemo, useState } from "react";
 import type { Albergue } from "@/lib/types";
 import { cuposLibres, urlMaps } from "@/lib/types";
+import { coincide } from "@/lib/buscar";
 import { BotonesContacto, BotonComoLlegar, Badge } from "@/components/Acciones";
 
-export default function AlberguesLista({ albergues }: { albergues: Albergue[] }) {
-  const [q, setQ] = useState("");
+export default function AlberguesLista({
+  albergues,
+  initialQ,
+}: {
+  albergues: Albergue[];
+  initialQ?: string;
+}) {
+  const [q, setQ] = useState(initialQ ?? "");
   const [soloOperativos, setSoloOperativos] = useState(false);
 
   const lista = useMemo(() => {
-    const texto = q.trim().toLowerCase();
+    const texto = q.trim();
     return albergues
       .filter((a) =>
         soloOperativos ? (a.estado ?? "").toLowerCase() === "operativo" : true
@@ -18,11 +25,7 @@ export default function AlberguesLista({ albergues }: { albergues: Albergue[] })
       .filter((a) =>
         !texto
           ? true
-          : [a.nombre, a.zona, a.municipio, a.direccion, a.necesidades]
-              .filter(Boolean)
-              .join(" ")
-              .toLowerCase()
-              .includes(texto)
+          : coincide([a.nombre, a.zona, a.municipio, a.direccion, a.necesidades], texto)
       );
   }, [albergues, q, soloOperativos]);
 

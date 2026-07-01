@@ -1,4 +1,6 @@
 // Header de marca PANA. Aparece arriba de cada pantalla.
+import Logo from "@/components/Logo";
+
 export default function Header({
   titulo,
   subtitulo,
@@ -13,9 +15,7 @@ export default function Header({
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 1.5rem)" }}
       >
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden>
-            🤝
-          </span>
+          <Logo size={24} />
           <span className="text-sm font-bold tracking-tight text-tinta">
             Red Pana Venezuela
           </span>

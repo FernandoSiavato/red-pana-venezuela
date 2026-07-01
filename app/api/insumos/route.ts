@@ -2,6 +2,7 @@ import { getInsumos } from "@/lib/data";
 import { esTerminal } from "@/lib/types";
 import { jsonPublic, corsOptions, tooMany } from "@/lib/apiPublic";
 import { rateLimit, rateHeaders } from "@/lib/rateLimit";
+import { buscarInsumos, sugerencias } from "@/lib/buscar";
 
 export const revalidate = 30; // cachea 30s
 
@@ -15,7 +16,7 @@ export async function GET(req: Request) {
   const urgencia = searchParams.get("urgencia");
   const estado = searchParams.get("estado");
   const zona = searchParams.get("zona")?.toLowerCase();
-  const q = searchParams.get("q")?.toLowerCase();
+  const q = searchParams.get("q")?.trim();
   const activos = searchParams.get("activos") === "1";
 
   let data = await getInsumos();
@@ -24,14 +25,18 @@ export async function GET(req: Request) {
   if (urgencia) data = data.filter((i) => (i.urgencia ?? "").toLowerCase() === urgencia.toLowerCase());
   if (estado) data = data.filter((i) => (i.estado ?? "").toLowerCase() === estado.toLowerCase());
   if (zona) data = data.filter((i) => (i.zona ?? "").toLowerCase().includes(zona));
-  if (q)
-    data = data.filter((i) =>
-      [i.insumo, i.zona, i.categoria, i.notas, i.solicitante, i.responsable]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(q)
-    );
+
+  // Búsqueda con relevancia (acentos, multipalabra, sinónimos, ranking)
+  if (q) {
+    const rankeados = buscarInsumos(data, q);
+    if (rankeados.length === 0) {
+      return jsonPublic(
+        { count: 0, insumos: [], sugerencias: sugerencias(data) },
+        rateHeaders(rl)
+      );
+    }
+    return jsonPublic({ count: rankeados.length, insumos: rankeados }, rateHeaders(rl));
+  }
 
   return jsonPublic({ count: data.length, insumos: data }, rateHeaders(rl));
 }

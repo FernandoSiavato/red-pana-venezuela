@@ -3,6 +3,7 @@ import { getInsumos, getAlbergues, getPaginas } from "@/lib/data";
 import { esTerminal } from "@/lib/types";
 import { resumenVistas } from "@/lib/reportes";
 import ResumenReportes from "@/components/ResumenReportes";
+import Logo from "@/components/Logo";
 import BuscadorGlobal, { type ItemIndice } from "./BuscadorGlobal";
 
 export const revalidate = 30;
@@ -28,19 +29,19 @@ export default async function Inicio() {
         tipo: "insumo" as const,
         titulo: i.insumo,
         sub: [i.zona, i.cantidad].filter(Boolean).join(" · ") || "Insumo",
-        href: "/insumos",
+        href: `/insumos?q=${i.id}`,
       })),
     ...albergues.map((a) => ({
       tipo: "albergue" as const,
       titulo: a.nombre,
       sub: [a.zona, a.municipio].filter(Boolean).join(" · ") || "Albergue",
-      href: "/albergues",
+      href: `/albergues?q=${encodeURIComponent(a.nombre)}`,
     })),
     ...paginas.map((p) => ({
       tipo: "pagina" as const,
       titulo: p.titulo,
       sub: p.categoria || "Página",
-      href: "/paginas",
+      href: `/paginas?q=${encodeURIComponent(p.titulo)}`,
     })),
   ];
 
@@ -80,14 +81,12 @@ export default async function Inicio() {
           style={{ paddingTop: "calc(env(safe-area-inset-top) + 2.5rem)" }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-3xl" aria-hidden>
-              🤝
-            </span>
+            <Logo size={30} />
             <span className="text-lg font-extrabold tracking-tight text-tinta">
               Red Pana Venezuela
             </span>
           </div>
-          <p className="mt-5 text-3xl font-extrabold leading-tight text-tinta">
+          <p className="font-display mt-5 text-3xl font-extrabold leading-tight text-tinta">
             La red que conecta la ayuda.
           </p>
           <p className="mt-2 text-base leading-relaxed text-tinta/80">

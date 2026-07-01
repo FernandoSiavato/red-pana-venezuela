@@ -7,7 +7,7 @@ export const revalidate = 30;
 export default async function InsumosPage({
   searchParams,
 }: {
-  searchParams: Promise<{ region?: string; grupo?: string; dia?: string }>;
+  searchParams: Promise<{ region?: string; grupo?: string; dia?: string; q?: string }>;
 }) {
   const [insumos, sp] = await Promise.all([getInsumos(), searchParams]);
   return (
@@ -21,6 +21,7 @@ export default async function InsumosPage({
         initialRegion={sp.region}
         initialGrupo={sp.grupo}
         initialDia={sp.dia}
+        initialQ={sp.q}
       />
     </main>
   );

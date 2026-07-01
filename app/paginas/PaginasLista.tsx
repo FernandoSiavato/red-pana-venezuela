@@ -2,20 +2,23 @@
 
 import { useMemo, useState } from "react";
 import type { Pagina } from "@/lib/types";
+import { coincide } from "@/lib/buscar";
 import { Badge } from "@/components/Acciones";
 
-export default function PaginasLista({ paginas }: { paginas: Pagina[] }) {
-  const [q, setQ] = useState("");
+export default function PaginasLista({
+  paginas,
+  initialQ,
+}: {
+  paginas: Pagina[];
+  initialQ?: string;
+}) {
+  const [q, setQ] = useState(initialQ ?? "");
 
   const lista = useMemo(() => {
-    const texto = q.trim().toLowerCase();
+    const texto = q.trim();
     if (!texto) return paginas;
     return paginas.filter((p) =>
-      [p.titulo, p.descripcion, p.categoria, p.url]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(texto)
+      coincide([p.titulo, p.descripcion, p.categoria, p.url], texto)
     );
   }, [paginas, q]);
 

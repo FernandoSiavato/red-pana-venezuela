@@ -4,8 +4,8 @@
   "description": "La red que conecta la ayuda en Venezuela: insumos, albergues y páginas útiles.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffc107",
-  "theme_color": "#ffc107",
+  "background_color": "#f6b600",
+  "theme_color": "#f6b600",
   "lang": "es",
   "orientation": "portrait",
   "icons": [

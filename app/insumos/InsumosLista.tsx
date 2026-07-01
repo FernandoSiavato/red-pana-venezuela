@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Insumo } from "@/lib/types";
 import { esTerminal, tipoInsumoMeta, fechaLegible } from "@/lib/types";
 import { regionDe, grupoDe, labelRegion, labelGrupo, diaCaracas, labelDia } from "@/lib/reportes";
+import { coincide } from "@/lib/buscar";
 import { BotonesContacto, Badge } from "@/components/Acciones";
 import InsumoDetalle from "@/components/InsumoDetalle";
 
@@ -21,13 +22,15 @@ export default function InsumosLista({
   initialRegion,
   initialGrupo,
   initialDia,
+  initialQ,
 }: {
   insumos: Insumo[];
   initialRegion?: string;
   initialGrupo?: string;
   initialDia?: string;
+  initialQ?: string;
 }) {
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(initialQ ?? "");
   const [tipo, setTipo] = useState<FiltroTipo>("todos");
   const [soloAlta, setSoloAlta] = useState(false);
   const [verResueltos, setVerResueltos] = useState(false);
@@ -62,11 +65,11 @@ export default function InsumosLista({
         // Filtrar por número de ID: "94" o "#94"
         const num = texto.replace(/^#/, "");
         if (/^\d+$/.test(num) && String(i.id).startsWith(num)) return true;
-        return [i.insumo, i.zona, i.categoria, i.responsable, i.solicitante, i.notas]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase()
-          .includes(texto);
+        // Búsqueda de texto sin acentos y multipalabra
+        return coincide(
+          [i.insumo, i.zona, i.categoria, i.responsable, i.solicitante, i.notas, i.mensaje_original],
+          texto
+        );
       })
       .sort((a, b) => {
         const ua = (a.urgencia ?? "").toLowerCase() === "alta" ? 0 : 1;
@@ -156,9 +159,26 @@ export default function InsumosLista({
       <InsumoDetalle insumo={sel} onClose={() => setSel(null)} />
 
       {lista.length === 0 && (
-        <p className="mt-10 text-center text-tinta-suave">
-          No encontramos nada con ese filtro. Probá con otra palabra. 🙏
-        </p>
+        <div className="mt-10 text-center">
+          <p className="text-tinta-suave">
+            No encontramos nada con estos filtros. 🙏
+          </p>
+          {(q || soloAlta || region || grupo || dia || tipo !== "todos") && (
+            <button
+              onClick={() => {
+                setQ("");
+                setTipo("todos");
+                setSoloAlta(false);
+                setRegion("");
+                setGrupo("");
+                setDia("");
+              }}
+              className="mx-auto mt-3 flex min-h-[44px] items-center justify-center rounded-full bg-pana-azul px-5 text-sm font-semibold text-white"
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </div>
       )}
 
       {resueltos > 0 && (
@@ -395,7 +415,7 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+      className={`min-h-[44px] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
         activo ? "bg-pana-azul text-white" : "bg-tarjeta text-tinta border border-gray-200"
       }`}
     >
